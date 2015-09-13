@@ -10,12 +10,12 @@
 ; associates (-) dashes with the start of each syllable.
 (define (hyphenate-control x y) 
 (cond
-(   (and (vowel x) (vowel (first y))) 									 		(word x '- y)) 
-(   (and (not (vowel x)) (not(vowel (first y)))) 								(word x y))
+(   (and (vowel x) (vowel (first y))) 						(word x '- y)) 
+(   (and (not (vowel x)) (not(vowel (first y)))) 				(word x y))
 (   (and (vowel x) (or (not (vowel (first y))) (not (equal? (first y) '-)))) 	(word x y))
-(   (and (not (vowel x)) (vowel (first y)) ) 									(word '- x y))
-(   (and (vowel x) (equal? (first y) '-)) 										(word x y))
-(   (and (not (vowel x)) (equal? (first y) '-)) 								(word x y))
+(   (and (not (vowel x)) (vowel (first y)) ) 					(word '- x y))
+(   (and (vowel x) (equal? (first y) '-)) 					(word x y))
+(   (and (not (vowel x)) (equal? (first y) '-)) 				(word x y))
 (	 else 																		'())
 ))
 
