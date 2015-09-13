@@ -1,25 +1,6 @@
-; METU CENG 111 
-; Take Home Exam 2
-
-; Turkish hyphenation function named as "hyphenate"
-
-; The algorithm used in this process:
-; 1. Execute 2-6 on a given word 
-; 2. Check two consequent letters in a word beginning from the end of a word
-; 	3. If vowel-vowel, hyphenate in the middle of them, print and continue
-; 	4. If consonant-consonant, print and continue
-;	5. If vowel-consonant, print and and continue
-;	6. If consonant-vowel, hyphenate at the beginning of that two letters, print and continue
-; 7. Check if there are any dashes in the first character of output
-;	8. If yes, remove. If no, continue
-; 9. Check if the output is exception
-;	10. If yes, combine the left consonants at the beginning with the first syllable. If no, print.
-; 11. End.
-
-
-; "unlu" function which checks whether the given input is
+; "vowel" function which checks whether the given input is
 ; vowel or not.
-(define (unlu x) 
+(define (vowel x) 
 		
 		(member? x '(a e o u i)))
 
@@ -29,13 +10,13 @@
 ; associates (-) dashes with the start of each syllable.
 (define (hyphenate-control x y) 
 (cond
-(   (and (unlu x) (unlu (first y))) 									 	(word x '- y)) 
-(   (and (not (unlu x)) (not(unlu (first y)))) 								(word x y))
-(   (and (unlu x) (or (not (unlu (first y))) (not (equal? (first y) '-)))) 	(word x y))
-(   (and (not (unlu x)) (unlu (first y)) ) 									(word '- x y))
-(   (and (unlu x) (equal? (first y) '-)) 									(word x y))
-(   (and (not (unlu x)) (equal? (first y) '-)) 								(word x y))
-(	 else 																	'())
+(   (and (vowel x) (vowel (first y))) 									 		(word x '- y)) 
+(   (and (not (vowel x)) (not(vowel (first y)))) 								(word x y))
+(   (and (vowel x) (or (not (vowel (first y))) (not (equal? (first y) '-)))) 	(word x y))
+(   (and (not (vowel x)) (vowel (first y)) ) 									(word '- x y))
+(   (and (vowel x) (equal? (first y) '-)) 										(word x y))
+(   (and (not (vowel x)) (equal? (first y) '-)) 								(word x y))
+(	 else 																		'())
 ))
 
 
@@ -53,21 +34,20 @@
 ; process by checking if the input one of the exceptions in 
 ; Turkish language. Mentioned exceptions are the expressions
 ; like 'tren' 'strateji' which start with more than one consonant.
-(define (hyphenate girdi)
+(define (hyphenate input)
 (cond
-		((and (not (unlu (first (accumulate-and-correct girdi)))) 
-		(equal? (first (bf (accumulate-and-correct girdi))) '-))
+		((and (not (vowel (first (accumulate-and-correct input)))) 
+		(equal? (first (bf (accumulate-and-correct input))) '-))
 							
-							(word (first (accumulate-and-correct girdi)) 
-							(bf (bf (accumulate-and-correct girdi)))))
+							(word (first (accumulate-and-correct input)) 
+							(bf (bf (accumulate-and-correct input)))))
 			  
-		((and (not (unlu (first (accumulate-and-correct girdi)))) 
-		(not (unlu (first (bf (accumulate-and-correct girdi)))))
-		(equal? (first (bf (bf(accumulate-and-correct girdi)))) '-) ) 
+		((and (not (vowel (first (accumulate-and-correct input)))) 
+		(not (vowel (first (bf (accumulate-and-correct input)))))
+		(equal? (first (bf (bf(accumulate-and-correct input)))) '-) ) 
 							
-							(word (first (accumulate-and-correct girdi)) 
-							(first (bf (accumulate-and-correct girdi))) 
-							(bf (bf (bf (accumulate-and-correct girdi)))) ))		
+							(word (first (accumulate-and-correct input)) 
+							(first (bf (accumulate-and-correct input))) 
+							(bf (bf (bf (accumulate-and-correct input)))) ))		
 							
-		(else (accumulate-and-correct girdi))))
-
+		(else (accumulate-and-correct input))))
